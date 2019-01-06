@@ -1,0 +1,33 @@
+
+#include<iostream>
+using namespace std;
+/**
+Process returned -1073741571 (0xC00000FD)这个错误表示数组越界
+**/
+int main()
+{
+    int n;
+    cin>>n;
+    int s[n],A[n];
+    for(int i=0;i<n;i++)
+    {
+        cin>>s[i];
+    }
+    for(int j=0;j<n;j++)
+    {
+        cin>>A[j];
+    }
+
+    int x=n-1;
+    int sum;
+    for(;x>=0;x--)
+    {
+        sum=2*s[n-1];
+        for(int i=x;i<n;i++)
+        {
+            sum+=A[i];
+        }
+        cout<<sum<<endl;
+    }
+    return 0;
+}

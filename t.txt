@@ -1,0 +1,39 @@
+#include<iostream>
+using namespace std;
+#define MAX_N_M 100005
+int main()
+{
+    int n,m;
+    int color[MAX_N_M],number[MAX_N_M];
+    cin>>n>>m;
+    for(int i=1;i<=n;i++)
+    {
+        cin>>number[i];
+    }
+    for(int i=1;i<=n;i++)
+    {
+        cin>>color[i];
+    }
+
+    int d=1;
+    long long sum=0;
+    int x,y,z;
+    int len=(n-1)/2;
+    for(;d<=len;d++)
+    {
+        for(int j=1;j<=n-2*d;j++)
+        {
+            x=j;
+            y=x+d;
+            z=x+2*d;
+            if(color[x]==color[z])
+            {
+                sum+=((x+z)*(number[x]+number[z]));
+            }
+        }
+    }
+    cout<<sum%10007;
+    return 0;
+}
+
+

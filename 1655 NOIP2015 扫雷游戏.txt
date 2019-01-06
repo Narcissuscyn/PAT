@@ -1,0 +1,56 @@
+
+#include<iostream>
+#include<memory>
+using namespace std;
+
+int b[3][3][2]={{{-1,-1},{-1,0},{-1,1}},
+                {{0,-1},{0,0},{0,1}},
+                {{1,-1},{1,0},{1,1}}};
+int main()
+{
+    int m,n;
+    cin>>n>>m;
+    char a[n+2][m+2];
+    memset(a,0,sizeof(a));
+    for(int i=1;i<=n;i++)
+    {
+        for(int j=1;j<=m;j++)
+        {
+            cin>>a[i][j];
+        }
+    }
+
+    for(int i=1;i<=n;i++)
+    {
+        for(int j=1;j<=n;j++)
+        {
+            int num=0;
+            if(a[i][j]!='*')
+            {
+                for(int s=0;s<3;s++)
+                {
+                    for(int l=0;l<3;l++)
+                    {
+                        if(a[i+b[s][l][0]][j+b[s][l][1]]=='*')
+                        {
+                            num++;
+                        }
+                    }
+                }
+
+                a[i][j]=num+'0';
+            }
+
+        }
+    }
+
+    for(int i=1;i<=n;i++)
+    {
+        for(int j=1;j<=m;j++)
+        {
+            cout<<a[i][j];
+        }
+        cout<<endl;
+    }
+    return 0;
+}
