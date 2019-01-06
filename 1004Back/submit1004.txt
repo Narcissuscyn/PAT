@@ -1,0 +1,136 @@
+
+#include<iostream>
+#include<string>
+using namespace std;
+#define MAX_CHILD 100
+class TreeNode
+{
+public:
+    string myNum;
+    int childCount;
+    int level;
+    string*childNum;
+
+    bool isMyChild(string childNum);
+    void setTreeNode(string myNum,int childCount,int level);
+    TreeNode();
+};
+
+
+bool TreeNode::isMyChild(string number)
+{
+    for(int i=0;i<this->childCount;i++)
+    {
+        if(number==childNum[i])
+        {
+            return true;
+        }
+    }
+    return false;
+}
+TreeNode::TreeNode()
+{
+    myNum="";
+    childCount=0;
+    level=0;
+}
+void TreeNode::setTreeNode(string myNum,int childCount,int level)
+{
+     this->myNum=myNum;
+    this->childCount=childCount;
+    this->level=level;
+    //this->parent=parent;
+    childNum=new string[childCount];
+    for(int i=0;i<this->childCount;i++)
+    {
+        childNum[i]="";
+    }
+}
+
+int main()
+{
+    int sumNodes=0;
+    int nonLeafNodes=0;
+    cin>>sumNodes>>nonLeafNodes;
+
+     if(nonLeafNodes==0)
+     {
+         cout<<"1";
+         return 0;
+     }
+
+
+    string myNum;
+    int childCount;
+    TreeNode* nodes;
+    nodes=new TreeNode[nonLeafNodes]();
+
+    //构造根节点
+    cin>>myNum>>childCount;
+    nodes[0].setTreeNode(myNum,childCount,0);
+    for(int i=0;i<childCount;i++)
+    {
+        cin>>nodes[0].childNum[i];
+    }
+    if(nonLeafNodes==1)
+    {
+        cout<<"0 "<<nodes[0].childCount;
+    }
+    else
+    {
+
+    //减去根节点
+    int child=1;
+    //输入所有除根节点的非叶结点编号
+    while(child<nonLeafNodes)
+    {
+    cin>>myNum>>childCount;
+
+    //寻找层数
+    int n=child-1;
+    int level;
+    while(n>=0)
+    {
+        if(nodes[n].isMyChild(myNum))
+        {
+            level=nodes[n].level+1;
+    nodes[n].childCount--;
+            break;
+        }
+        n--;
+    }
+
+    //构建新的节点
+    nodes[child].setTreeNode(myNum,childCount,level);
+
+    for(int i=0;i<childCount;i++)
+    {
+        cin>>nodes[child].childNum[i];
+    }
+
+    child++;
+    }
+    //输出结果
+     cout<<"0 ";
+    int temp=0;
+    int lastLevel=0;
+    for(int i=0;i<nonLeafNodes;i++)
+    {
+        if(lastLevel==nodes[i].level)
+        {
+            temp+=nodes[i].childCount;
+        }
+        else
+        {
+            cout<<temp<<" ";
+            temp=0;
+            temp+=nodes[i].childCount;
+        }
+        lastLevel=nodes[i].level;
+
+    }
+    cout<<temp<<endl;
+
+    }
+    return 0;
+}

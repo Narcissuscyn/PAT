@@ -1,0 +1,180 @@
+
+#ifndef TREE_H
+#define TREE_H
+#include<iostream>
+#include<string>
+using namespace std;
+#define MAX_CHILD 100
+class TreeNode
+{
+public:
+    string myNum;
+    int childCount;
+    int level;
+    string*childNum;
+   //int parent;
+
+    bool isMyChild(string childNum);
+    void setTreeNode(string myNum,int childCount,int level);
+    TreeNode();
+   //TreeNode(string myNum,int childCount,int level,int parent);
+};
+#endif // TREE_H
+
+
+
+#include "Tree.h"
+bool TreeNode::isMyChild(string number)
+{
+    for(int i=0;i<this->childCount;i++)
+    {
+        if(number==childNum[i])
+        {
+            return true;
+        }
+    }
+    return false;
+}
+/*
+TreeNode::TreeNode(string myNum,int childCount,int level,int parent)
+{
+    this->myNum=myNum;
+    this->childCount=childCount;
+    this->level=level;
+    //this->parent=parent;
+    childNum=new string[childCount];
+    for(int i=0;i<this->childCount;i++)
+    {
+        childNum[i]="";
+    }
+}*/
+TreeNode::TreeNode()
+{
+    myNum="";
+    childCount=0;
+    level=0;
+   // parent=0;
+}
+void TreeNode::setTreeNode(string myNum,int childCount,int level)
+{
+     this->myNum=myNum;
+    this->childCount=childCount;
+    this->level=level;
+    //this->parent=parent;
+    childNum=new string[childCount];
+    for(int i=0;i<this->childCount;i++)
+    {
+        childNum[i]="+++++++++++++++++++";
+    }
+}
+
+
+#include "Tree.h"
+int main()
+{
+    int sumNodes=0;
+    int nonLeafNodes=0;
+    cin>>sumNodes>>nonLeafNodes;
+
+     if(nonLeafNodes==0)
+     {
+         cout<<"1";
+         return 0;
+     }
+
+
+    string myNum;
+    int childCount;
+    TreeNode* nodes;
+    nodes=new TreeNode[nonLeafNodes]();
+
+    //构造根节点
+    cin>>myNum>>childCount;
+  //  cout<<"*****************"<<childCount<<endl;
+    nodes[0].setTreeNode(myNum,childCount,0);
+    for(int i=0;i<childCount;i++)
+    {
+        cin>>nodes[0].childNum[i];
+     //   cout<<"%%%%%%%%%%%%%%%%%%%%%%%%%:"<<nodes[0].childNum[i]<<endl;
+    }
+    if(nonLeafNodes==1)
+    {
+        cout<<"0 "<<nodes[0].childCount;
+    }
+    else
+    {
+
+    //减去根节点
+    int child=1;
+    //输入所有除根节点的非叶结点编号
+    while(child<nonLeafNodes)
+    {
+    cin>>myNum>>childCount;
+
+    //寻找层数
+    int n=child-1;
+    int level;
+    while(n>=0)
+    {
+        if(nodes[n].isMyChild(myNum))
+        {
+            level=nodes[n].level+1;
+    nodes[n].childCount--;
+            break;
+        }
+        n--;
+    }
+  //cout<<"n:__________________________"<<n<<endl;
+    //构建新的节点
+    nodes[child].setTreeNode(myNum,childCount,level);
+
+    for(int i=0;i<childCount;i++)
+    {
+        cin>>nodes[child].childNum[i];
+    }
+
+    child++;
+    }
+
+
+    //输出结果
+     cout<<"0 ";
+    int temp=0;
+    int lastLevel=0;
+
+   // cout<<"************非叶结点数："<<nonLeafNodes<<endl;
+    for(int i=0;i<nonLeafNodes;i++)
+    {
+        if(lastLevel==nodes[i].level)
+        {
+           //cout<<nodes[i].childCount<<"***************************************"<<endl;
+            temp+=nodes[i].childCount;
+        }
+        else
+        {
+            cout<<temp<<" ";
+            //cout<<nodes[i].childCount<<"else***************************************"<<endl;
+           // cout<<temp<<" +++++++=";
+            temp=0;
+            temp+=nodes[i].childCount;
+        }
+        lastLevel=nodes[i].level;
+
+    }
+    cout<<temp<<endl;
+
+    }
+   /* //输出数据，检查构造的数据是否有错误
+   for(int i=0;i<nonLeafNodes;i++)
+    {
+        cout<<"MyNum:"<<nodes[i].myNum<<" childCount:"<<nodes[i].childCount<<" level:"<<nodes[i].level<<endl;
+        cout<<"childNum:";
+        for(int j=0;j<nodes[i].childCount;j++)
+        {
+            cout<<"-----"<<nodes[i].childNum[j];
+        }
+        cout<<endl<<endl;
+    }
+*/
+    return 0;
+}
